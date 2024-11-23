@@ -1,50 +1,51 @@
 <template>
   <div class="container-fluid home-content">
     <button @click="navigateTo('/profile')">Go to Dashboard</button>
-    <div class="block text-center" m="t-4">
-      <span class="demonstration">Switch when indicator is clicked</span>
-      <el-carousel trigger="click" height="150px">
-        <el-carousel-item v-for="item in 4" :key="item">
-          <h3 class="small justify-center" text="2xl">{{ item }}</h3>
-        </el-carousel-item>
-      </el-carousel>
-    </div>
+
     <div v-if="product" class="mt-4">
       <h2>Fetched Product</h2>
-      <pre>{{ product }}</pre>
+      <div class="d-flex flex-wrap" v-for="items in product" :key="items.limit">
+        <div class="d-flex" v-for="item in items.products" :key="item.id" style="flex: 1 1 300px; padding: 10px;">
+          <el-card style="max-width: 100%">
+            <template #header>{{ item.title }}</template>
+            <img :src="item.thumbnail" style="width: 100%" />
+          </el-card>
+        </div>
+      </div>
+    </div>
+    <div v-else>
+      <SkeletonProduct />
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
-import { useProductStore } from "~/store/product.js";
+import { ref, onMounted } from 'vue'
+import { useProductStore } from '~/store/product.js'
 
-useSeoMeta({ title: "ITE | Home" });
+useSeoMeta({ title: 'ITE | Home' })
 
-const product = ref(null);
+const product = ref(null)
 
 onMounted(async () => {
-  const productStore = useProductStore();
-  await productStore.getProduct();
-  product.value = productStore.product;
-});
+  const productStore = useProductStore()
+  await productStore.getProduct()
+  product.value = productStore.product
+})
 </script>
 
 <style scoped>
-.el-carousel__item h3 {
+
+h3 {
   color: #475669;
-  opacity: 0.75;
-  line-height: 200px;
-  margin: 0;
-  text-align: center;
+  font-size: 1.5rem;
 }
 
-.el-carousel__item:nth-child(2n) {
-  background-color: #99a9bf;
+p {
+  color: #555;
 }
 
-.el-carousel__item:nth-child(2n + 1) {
-  background-color: #d3dce6;
+strong {
+  font-weight: bold;
 }
 </style>
