@@ -1,6 +1,7 @@
 <template>
   <div class="container-fluid home-content">
     <button @click="navigateTo('/profile')">Go to Dashboard</button>
+    <h1>Hell world New world</h1>
     <h1>Hello i am Rockyy</h1>
     <div v-if="product" class="mt-4">
       <h2>Fetched Product</h2>
