@@ -1,25 +1,16 @@
-# This is a basic workflow to help you get started with Actions
-
 name: Telegram notification
 
-# Controls when the action will run. Triggers the workflow on pull request
 on:
   pull_request:
     branches: [ main ]
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+  notify:
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      # Runs the telegram notify action to send a notification
       - name: Telegram Notify
         uses: appleboy/telegram-action@master
         with:
@@ -27,4 +18,20 @@ jobs:
           token: ${{ secrets.TELEGRAM_TOKEN }}
           format: markdown
           message: |
-            A new PR is raised [View all PR's](https://github.com/<user>/<repo>/pulls)
+            *Pull Request Notification* 🚀
+            -----------------------------------
+            *Repository:* ${{ github.repository }}
+            *PR Number:* #${{ github.event.pull_request.number }}
+            *Title:* ${{ github.event.pull_request.title }}
+            *Author:* ${{ github.event.pull_request.user.login }}
+            *Branch:* ${{ github.event.pull_request.head.ref }} → ${{ github.event.pull_request.base.ref }}
+            *Status:* ${{ github.event.pull_request.state }}
+            *Created At:* ${{ github.event.pull_request.created_at }}
+            *Last Updated:* ${{ github.event.pull_request.updated_at }}
+
+            *Files Changed:* ${{ github.event.pull_request.changed_files }}
+            *Additions:* +${{ github.event.pull_request.additions }}
+            *Deletions:* -${{ github.event.pull_request.deletions }}
+            *Commits in PR:* ${{ github.event.pull_request.commits }}
+
+            *View PR:* [Click here](${{ github.event.pull_request.html_url }})
